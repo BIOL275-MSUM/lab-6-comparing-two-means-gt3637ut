@@ -52,6 +52,14 @@ fish_mean_diff <-
 fish_ttest <- t.test(species ~ location, data = fish_long)
 fish_ttest$estimate
 
+#Interpreting the t test:
+  #Mean of Downstream : 16.41667
+  #Mean of Upstream: 14.58333
+  #Difference is: 1.83334
+  #Standard deviation of both groups are not the same so it is not a two sample t test because the third assumption is violated 
+  #P-value: 0.55 = no difference in the mean number of species 
+  
+  
 #C. State the assumptions that you had to make to complete parts (A) and (B). Create a graph to assess whether one of those assumptions was met.
 
 fish_long %>%
@@ -61,4 +69,50 @@ fish_long %>%
     bins = 5, 
     alpha = 0.5, 
     position = "identity"
-  ) 
+  ) +
+  facet_wrap(~ location)
+summary(fish_long)
+
+
+
+#Ttest Question 
+
+crabs <- read_csv("chap15q27FiddlerCrabFans.txt")
+crabs
+
+# D) 
+crabs %>%
+  ggplot(aes(x = bodyTemperature)) +
+  geom_histogram(
+    aes(fill = crabType ), 
+    bins = 5, 
+    alpha = 0.5, 
+    position = "identity"
+  ) +
+  facet_wrap(~ crabType)
+
+
+# E) 
+
+# H0: Body temperature is equal among all crab types
+# HA: At least one crab type will be different from the others 
+
+aov_crabs <- 
+  aov(bodyTemperature ~ crabType, data = crabs)
+aov_crabs
+
+summary(aov_crabs)
+
+#Interpreting the ANOVA
+# Mean of crabType: .8804
+# Mean of Residuals: .0433
+
+Call:
+  aov(formula = bodyTemperature ~ crabType, data = crabs)
+
+Terms:
+ # crabType Residuals
+#Sum of Squares  2.641310  3.467619
+#Deg. of Freedom        3        80
+
+

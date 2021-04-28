@@ -22,6 +22,8 @@ For each question below, write a sentence answering the question and show the co
 ## Question A
 
 > Test the hypothesis that the tributaries have no effect on the number of species of electric fish.
+Welch's t ttest
+
 
 ```{r t-test}
 fish_ttest <- t.test(species ~ location, data = fish_long)
@@ -68,3 +70,49 @@ fish_long %>%
     position = "identity"
     ) 
 ```
+
+
+## Question D
+
+> Graph the distribution of body temperatures for each crab type:
+
+ANSWER
+
+```{r}
+crabs <- read_csv("chap15q27FiddlerCrabFans.txt")
+crabs
+
+# D) 
+crabs %>%
+  ggplot(aes(x = bodyTemperature)) +
+  geom_histogram(
+    aes(fill = crabType ), 
+    bins = 5, 
+    alpha = 0.5, 
+    position = "identity"
+  ) +
+  facet_wrap(~ crabType)
+```
+
+
+## Question E
+
+> Does body temperature varies among crab types? State the null and alternative hypothesis, conduct and ANOVA, and interpret the results.
+
+ANSWER 
+
+```{r}
+aov_crabs <- 
+  aov(bodyTemperature ~ crabType, data = crabs)
+aov_crabs
+
+summary(aov_crabs)
+```
+
+# H0: Body temperature is equal among all crab types
+# HA: At least one crab type will be different from the others 
+
+
+#Interpreting the ANOVA
+# Mean of crabType: .8804
+# Mean of Residuals: .0433
