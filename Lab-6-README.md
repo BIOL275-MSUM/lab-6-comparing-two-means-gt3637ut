@@ -74,7 +74,7 @@ fish_long <-
 ## Question A
 
 > Test the hypothesis that the tributaries have no effect on the number
-> of species of electric fish. Welch’s t ttest
+> of species of electric fish.
 
 ``` r
 fish_ttest <- t.test(species ~ location, data = fish_long)
@@ -83,6 +83,12 @@ fish_ttest$estimate
 
     ## mean in group Downstream   mean in group Upstream 
     ##                 16.41667                 14.58333
+
+\#Interpreting the t test: Mean of Downstream : 16.41667 Mean of
+Upstream: 14.58333 Difference is: 1.83334 Standard deviation of both
+groups are not the same so it is not a two sample t test because the
+third assumption is violated P-value is 0.5596, meaning that we fail to
+reject our null hypothesis
 
 ANSWER
 
@@ -231,5 +237,6 @@ summary(aov_crabs)
 
 # HA: At least one crab type will be different from the others
 
-\#Interpreting the ANOVA \# Mean of crabType: .8804 \# Mean of
-Residuals: .0433
+\#Interpreting the ANOVA Mean of crabType: .8804 Mean of Residuals:
+.0433 P-value: .0000000007. It is smaller than 0.5 so we reject our null
+hypothesis
