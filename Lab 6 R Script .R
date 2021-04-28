@@ -52,12 +52,14 @@ fish_mean_diff <-
 fish_ttest <- t.test(species ~ location, data = fish_long)
 fish_ttest$estimate
 
+fish_ttest
+
 #Interpreting the t test:
   #Mean of Downstream : 16.41667
   #Mean of Upstream: 14.58333
   #Difference is: 1.83334
   #Standard deviation of both groups are not the same so it is not a two sample t test because the third assumption is violated 
-  #P-value: 0.55 = no difference in the mean number of species 
+
   
   
 #C. State the assumptions that you had to make to complete parts (A) and (B). Create a graph to assess whether one of those assumptions was met.
