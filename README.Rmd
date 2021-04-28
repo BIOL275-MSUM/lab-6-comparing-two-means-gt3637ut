@@ -1,9 +1,15 @@
 ---
-title: "Lab 6 Comparing two means"
-author: ""
-date: "`r Sys.Date()`"
+title: "Lab 6 Comparing Two Means"
+author: "Hiba Chaudhry"
 output: github_document
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
 
 Researchers studying the number of electric fish species living in various parts of the Amazon basin were interested in whether the presence of tributaries affected the local number of electric fish species in the main rivers (Fernandes et al. 2004).
 
@@ -11,14 +17,17 @@ They counted the number of electric fish species above and below the entrance po
 
 The data is provided in your GitHub repository.
 
-For each question below, write a sentence answering the question and show the code you used to come up with the answer, if applicable.
+For each question below, write a sentence answering the question and show the code you used to come up with the answer, if applicable. like this:
 
 ## Question A
 
 > Test the hypothesis that the tributaries have no effect on the number of species of electric fish.
+Welch's t ttest
+
 
 ```{r t-test}
-
+fish_ttest <- t.test(species ~ location, data = fish_long)
+fish_ttest$estimate
 ```
 
 ANSWER
@@ -29,6 +38,22 @@ ANSWER
 
 ANSWER
 
+```{r}
+fish_mean_diff <-
+  fish_long %>% 
+  group_by(location) %>% 
+  summarize(
+    n = n(),
+    mean = mean(species),
+    sd = sd(species),
+    sem = sd/sqrt(n),
+    upper = mean + 1.96 * sem,
+    lower = mean - 1.96 * sem
+  ) %>% 
+  print()
+```
+
+
 ## Question C
 
 > State the assumptions that you had to make to complete parts (A) and (B). Create a graph to assess whether one of those assumptions was met.
@@ -36,5 +61,58 @@ ANSWER
 ANSWER
 
 ```{r}
-
+fish_long %>%
+    ggplot(aes(x = species)) +
+    geom_histogram(
+    aes(fill = location), 
+    bins = 5, 
+    alpha = 0.5, 
+    position = "identity"
+    ) 
 ```
+
+
+## Question D
+
+> Graph the distribution of body temperatures for each crab type:
+
+ANSWER
+
+```{r}
+crabs <- read_csv("chap15q27FiddlerCrabFans.txt")
+crabs
+
+# D) 
+crabs %>%
+  ggplot(aes(x = bodyTemperature)) +
+  geom_histogram(
+    aes(fill = crabType ), 
+    bins = 5, 
+    alpha = 0.5, 
+    position = "identity"
+  ) +
+  facet_wrap(~ crabType)
+```
+
+
+## Question E
+
+> Does body temperature varies among crab types? State the null and alternative hypothesis, conduct and ANOVA, and interpret the results.
+
+ANSWER 
+
+```{r}
+aov_crabs <- 
+  aov(bodyTemperature ~ crabType, data = crabs)
+aov_crabs
+
+summary(aov_crabs)
+```
+
+# H0: Body temperature is equal among all crab types
+# HA: At least one crab type will be different from the others 
+
+
+#Interpreting the ANOVA
+# Mean of crabType: .8804
+# Mean of Residuals: .0433
